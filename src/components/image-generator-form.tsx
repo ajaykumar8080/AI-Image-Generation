@@ -50,7 +50,6 @@ export default function ImageGeneratorForm() {
     if (!imageUrl) return;
     const link = document.createElement('a');
     link.href = imageUrl;
-    // Suggest a filename for the download
     const fileName = prompt.trim().toLowerCase().replace(/\s+/g, '_') || 'generated_image';
     link.download = `${fileName}.png`; 
     document.body.appendChild(link);
@@ -59,7 +58,7 @@ export default function ImageGeneratorForm() {
   };
 
   return (
-    <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary">
+    <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
       <CardHeader className="text-center">
         <CardTitle className="text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
       </CardHeader>
@@ -81,7 +80,7 @@ export default function ImageGeneratorForm() {
         <Button
           onClick={handleGenerateImage}
           disabled={isLoading}
-          className="w-full text-lg py-6"
+          className="w-full text-lg py-6 transition-transform duration-200 ease-in-out hover:scale-105"
         >
           {isLoading ? (
             <>
@@ -128,7 +127,7 @@ export default function ImageGeneratorForm() {
           <Button
             onClick={handleDownloadImage}
             variant="outline"
-            className="w-full text-lg py-6 mt-4"
+            className="w-full text-lg py-6 mt-4 transition-transform duration-200 ease-in-out hover:scale-105"
           >
             <Download className="mr-2 h-5 w-5" />
             Download Image
@@ -138,4 +137,3 @@ export default function ImageGeneratorForm() {
     </Card>
   );
 }
-
