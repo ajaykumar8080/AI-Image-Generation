@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -5,8 +6,8 @@ import { generateImage } from '@/ai/flows/generate-image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Image as ImageIcon, AlertTriangle } from 'lucide-react';
-import NextImage from 'next/image'; // Renamed to avoid conflict with lucide-react Image icon
+import { Loader2, Image as ImageIcon, AlertTriangle, Download } from 'lucide-react';
+import NextImage from 'next/image'; 
 
 export default function ImageGeneratorForm() {
   const [prompt, setPrompt] = useState('');
@@ -43,6 +44,18 @@ export default function ImageGeneratorForm() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleDownloadImage = () => {
+    if (!imageUrl) return;
+    const link = document.createElement('a');
+    link.href = imageUrl;
+    // Suggest a filename for the download
+    const fileName = prompt.trim().toLowerCase().replace(/\s+/g, '_') || 'generated_image';
+    link.download = `${fileName}.png`; 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -110,6 +123,16 @@ export default function ImageGeneratorForm() {
             </div>
           )}
         </div>
+        {imageUrl && !isLoading && (
+          <Button
+            onClick={handleDownloadImage}
+            variant="outline"
+            className="w-full text-lg py-6 mt-4"
+          >
+            <Download className="mr-2 h-5 w-5" />
+            Download Image
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
