@@ -61,7 +61,7 @@ export default function ImageGeneratorForm() {
   return (
     <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary">
       <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-headline font-semibold text-primary">Create with AI</CardTitle>
+        <CardTitle className="text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">
@@ -138,3 +138,4 @@ export default function ImageGeneratorForm() {
     </Card>
   );
 }
+
