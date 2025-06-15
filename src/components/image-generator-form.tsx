@@ -108,10 +108,11 @@ export default function ImageGeneratorForm() {
             <NextImage 
               src={imageUrl} 
               alt={prompt || "Generated AI image"} 
-              width={512} 
-              height={512} 
+              width={1024} 
+              height={1024} 
               className="max-w-full h-auto rounded-md object-contain"
               data-ai-hint="generated image"
+              priority={true} 
             />
           )}
           {!isLoading && !imageUrl && (
