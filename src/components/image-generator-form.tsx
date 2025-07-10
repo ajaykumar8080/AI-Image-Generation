@@ -6,7 +6,7 @@ import { generateImage } from '@/ai/flows/generate-image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Image as ImageIcon, AlertTriangle, Download } from 'lucide-react';
+import { Loader2, Image as ImageIcon, AlertTriangle, Download, X } from 'lucide-react';
 import NextImage from 'next/image'; 
 
 export default function ImageGeneratorForm() {
@@ -56,6 +56,10 @@ export default function ImageGeneratorForm() {
     link.click();
     document.body.removeChild(link);
   };
+  
+  const handleClearPrompt = () => {
+    setPrompt('');
+  };
 
   return (
     <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
@@ -63,7 +67,7 @@ export default function ImageGeneratorForm() {
         <CardTitle className="text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div className="space-y-2">
+        <div className="space-y-2 relative">
           <label htmlFor="prompt-input" className="sr-only">Image Prompt</label>
           <Input
             id="prompt-input"
@@ -71,10 +75,20 @@ export default function ImageGeneratorForm() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe the image you want to create..."
-            className="text-base"
+            className="text-base pr-10"
             disabled={isLoading}
             aria-describedby="status-message"
           />
+          {prompt && (
+            <button
+              onClick={handleClearPrompt}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              aria-label="Clear prompt"
+              disabled={isLoading}
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
 
         <Button
