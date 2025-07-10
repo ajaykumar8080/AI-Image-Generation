@@ -1,4 +1,4 @@
-import { Camera } from 'lucide-react';
+import { Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
 
@@ -7,8 +7,8 @@ export function Header() {
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 w-full border-b">
       <div className="container flex h-16 items-center mx-auto px-4">
         <Link href="/" className="flex items-center space-x-2">
-          <Camera className="h-6 w-6 text-primary" />
-          <span className="font-bold text-xl">VisionaryAI</span>
+          <Wand2 className="h-6 w-6 text-primary" />
+          <span className="font-bold text-xl">PixelForge</span>
         </Link>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <nav className="flex items-center space-x-1">

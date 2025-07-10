@@ -6,7 +6,7 @@ import { Footer } from '@/components/footer';
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'VisionaryAI',
+  title: 'PixelForge',
   description: 'Generate amazing images with AI',
 };
 
