@@ -89,7 +89,7 @@ export default function ImageGeneratorForm() {
               aria-label="Clear prompt"
               disabled={isLoading}
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </button>
           )}
         </div>
