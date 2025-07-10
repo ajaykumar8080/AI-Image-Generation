@@ -59,6 +59,9 @@ export default function ImageGeneratorForm() {
   
   const handleClearPrompt = () => {
     setPrompt('');
+    setImageUrl(null);
+    setError(null);
+    setStatusMessage('Your amazing creation will appear here!');
   };
 
   return (
