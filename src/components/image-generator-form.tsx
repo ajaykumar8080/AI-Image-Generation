@@ -6,7 +6,7 @@ import { generateImage } from '@/ai/flows/generate-image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Image as ImageIcon, AlertTriangle, Download, X } from 'lucide-react';
+import { Loader2, Image as ImageIcon, AlertTriangle, Download, X, History } from 'lucide-react';
 import NextImage from 'next/image'; 
 
 export default function ImageGeneratorForm() {
@@ -15,6 +15,7 @@ export default function ImageGeneratorForm() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('Your amazing creation will appear here!');
   const [error, setError] = useState<string | null>(null);
+  const [history, setHistory] = useState<string[]>([]);
 
   const handleGenerateImage = async () => {
     if (!prompt.trim()) {
@@ -33,6 +34,9 @@ export default function ImageGeneratorForm() {
       if (result.imageDataUri) {
         setImageUrl(result.imageDataUri);
         setStatusMessage('Your masterpiece is ready!');
+        setHistory(prevHistory => 
+          [prompt, ...prevHistory.filter(p => p.toLowerCase() !== prompt.toLowerCase())].slice(0, 5)
+        );
       } else {
         throw new Error('Image generation failed to return data.');
       }
@@ -64,93 +68,125 @@ export default function ImageGeneratorForm() {
     setStatusMessage('Your amazing creation will appear here!');
   };
 
-  return (
-    <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
-      <CardHeader className="text-center">
-        <CardTitle className="text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-2 relative">
-          <label htmlFor="prompt-input" className="sr-only">Image Prompt</label>
-          <Input
-            id="prompt-input"
-            type="text"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe the image you want to create..."
-            className="text-base pr-10"
-            disabled={isLoading}
-            aria-describedby="status-message"
-          />
-          {prompt && (
-            <button
-              onClick={handleClearPrompt}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-              aria-label="Clear prompt"
-              disabled={isLoading}
-            >
-              <X className="h-6 w-6" />
-            </button>
-          )}
-        </div>
+  const handleHistoryClick = (historyPrompt: string) => {
+    setPrompt(historyPrompt);
+  };
 
-        <Button
-          onClick={handleGenerateImage}
-          disabled={isLoading}
-          className="w-full text-lg py-6 transition-transform duration-200 ease-in-out hover:scale-105"
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            'Generate Image'
-          )}
-        </Button>
-        
-        <div 
-          id="image-display-area"
-          className="mt-6 min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg flex flex-col justify-center items-center bg-gray-50 p-4 text-center overflow-hidden"
-          aria-live="polite"
-        >
-          {isLoading && !imageUrl && (
-            <div className="flex flex-col items-center text-muted-foreground">
-              <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
-              <p className="font-semibold">{statusMessage}</p>
-            </div>
-          )}
-          {!isLoading && imageUrl && (
-            <NextImage 
-              src={imageUrl} 
-              alt={prompt || "Generated AI image"} 
-              width={1024} 
-              height={1024} 
-              className="max-w-full h-auto rounded-md object-contain"
-              data-ai-hint="generated image"
-              priority={true} 
+  return (
+    <>
+      <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2 relative">
+            <label htmlFor="prompt-input" className="sr-only">Image Prompt</label>
+            <Input
+              id="prompt-input"
+              type="text"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Describe the image you want to create..."
+              className="text-base pr-10"
+              disabled={isLoading}
+              aria-describedby="status-message"
             />
-          )}
-          {!isLoading && !imageUrl && (
-             <div className="flex flex-col items-center text-muted-foreground">
-              {error ? <AlertTriangle className="h-12 w-12 text-destructive mb-4" /> : <ImageIcon className="h-12 w-12 text-primary mb-4" /> }
-              <p id="status-message" className={`font-semibold ${error ? 'text-destructive' : ''}`}>
-                {error || statusMessage}
-              </p>
-            </div>
-          )}
-        </div>
-        {imageUrl && !isLoading && (
+            {prompt && (
+              <button
+                onClick={handleClearPrompt}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                aria-label="Clear prompt"
+                disabled={isLoading}
+              >
+                <X className="h-6 w-6" />
+              </button>
+            )}
+          </div>
+
           <Button
-            onClick={handleDownloadImage}
-            variant="outline"
-            className="w-full text-lg py-6 mt-4 transition-transform duration-200 ease-in-out hover:scale-105"
+            onClick={handleGenerateImage}
+            disabled={isLoading}
+            className="w-full text-lg py-6 transition-transform duration-200 ease-in-out hover:scale-105"
           >
-            <Download className="mr-2 h-5 w-5" />
-            Download Image
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              'Generate Image'
+            )}
           </Button>
-        )}
-      </CardContent>
-    </Card>
+          
+          <div 
+            id="image-display-area"
+            className="mt-6 min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg flex flex-col justify-center items-center bg-gray-50 p-4 text-center overflow-hidden"
+            aria-live="polite"
+          >
+            {isLoading && !imageUrl && (
+              <div className="flex flex-col items-center text-muted-foreground">
+                <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                <p className="font-semibold">{statusMessage}</p>
+              </div>
+            )}
+            {!isLoading && imageUrl && (
+              <NextImage 
+                src={imageUrl} 
+                alt={prompt || "Generated AI image"} 
+                width={1024} 
+                height={1024} 
+                className="max-w-full h-auto rounded-md object-contain"
+                data-ai-hint="generated image"
+                priority={true} 
+              />
+            )}
+            {!isLoading && !imageUrl && (
+               <div className="flex flex-col items-center text-muted-foreground">
+                {error ? <AlertTriangle className="h-12 w-12 text-destructive mb-4" /> : <ImageIcon className="h-12 w-12 text-primary mb-4" /> }
+                <p id="status-message" className={`font-semibold ${error ? 'text-destructive' : ''}`}>
+                  {error || statusMessage}
+                </p>
+              </div>
+            )}
+          </div>
+          {imageUrl && !isLoading && (
+            <Button
+              onClick={handleDownloadImage}
+              variant="outline"
+              className="w-full text-lg py-6 mt-4 transition-transform duration-200 ease-in-out hover:scale-105"
+            >
+              <Download className="mr-2 h-5 w-5" />
+              Download Image
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+      
+      {history.length > 0 && (
+        <Card className="w-full max-w-xl mt-8 animate-fadeIn shadow-lg rounded-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center text-xl">
+              <History className="mr-2 h-5 w-5" />
+              Search History
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {history.map((item, index) => (
+                <li key={index}>
+                  <button 
+                    onClick={() => handleHistoryClick(item)} 
+                    className="w-full text-left p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors duration-200"
+                    disabled={isLoading}
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 }
