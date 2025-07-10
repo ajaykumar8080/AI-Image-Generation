@@ -1,5 +1,6 @@
 import { Camera } from 'lucide-react';
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 export function Header() {
   return (
@@ -9,6 +10,11 @@ export function Header() {
           <Camera className="h-6 w-6 text-primary" />
           <span className="font-bold text-xl">VisionaryAI</span>
         </Link>
+        <div className="flex flex-1 items-center justify-end space-x-4">
+          <nav className="flex items-center space-x-1">
+            <ThemeToggle />
+          </nav>
+        </div>
       </div>
     </header>
   );
