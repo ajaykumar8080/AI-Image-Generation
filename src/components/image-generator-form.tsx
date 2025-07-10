@@ -6,7 +6,7 @@ import { generateImage } from '@/ai/flows/generate-image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Image as ImageIcon, AlertTriangle, Download, X, History } from 'lucide-react';
+import { Loader2, Image as ImageIcon, AlertTriangle, Download, X, History, Trash2 } from 'lucide-react';
 import NextImage from 'next/image'; 
 
 export default function ImageGeneratorForm() {
@@ -70,6 +70,10 @@ export default function ImageGeneratorForm() {
 
   const handleHistoryClick = (historyPrompt: string) => {
     setPrompt(historyPrompt);
+  };
+
+  const handleClearHistory = () => {
+    setHistory([]);
   };
 
   return (
@@ -165,9 +169,21 @@ export default function ImageGeneratorForm() {
       {history.length > 0 && (
         <Card className="w-full max-w-xl mt-8 animate-fadeIn shadow-lg rounded-xl">
           <CardHeader>
-            <CardTitle className="flex items-center text-xl">
-              <History className="mr-2 h-5 w-5" />
-              Search History
+            <CardTitle className="flex items-center justify-between text-xl">
+              <div className="flex items-center">
+                <History className="mr-2 h-5 w-5" />
+                Search History
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleClearHistory}
+                aria-label="Clear search history"
+                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                disabled={isLoading}
+              >
+                <Trash2 className="h-5 w-5" />
+              </Button>
             </CardTitle>
           </CardHeader>
           <CardContent>
