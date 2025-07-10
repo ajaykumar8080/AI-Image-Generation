@@ -2,8 +2,8 @@ import ImageGeneratorForm from '@/components/image-generator-form';
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 md:p-8">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 flex items-center justify-center">
       <ImageGeneratorForm />
-    </main>
+    </div>
   );
 }
