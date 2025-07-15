@@ -1,6 +1,7 @@
 import { Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
+import { Button } from './ui/button';
 
 export function Header() {
   return (
@@ -10,9 +11,10 @@ export function Header() {
           <Wand2 className="h-6 w-6 text-primary" />
           <span className="font-bold text-xl">PixelForge</span>
         </Link>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center space-x-1">
             <ThemeToggle />
+            <Button variant="outline">Sign In</Button>
           </nav>
         </div>
       </div>
