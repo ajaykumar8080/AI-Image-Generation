@@ -1,3 +1,4 @@
+
 // src/ai/flows/generate-image.ts
 'use server';
 /**
@@ -38,7 +39,7 @@ const generateImageFlow = ai.defineFlow(
   async input => {
     const {media} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: `Generate an image of: ${input.prompt}`,
+      prompt: `Generate a high-quality, visually appealing image based on the following description: "${input.prompt}". The image should be a direct visual representation of the prompt, avoiding any text, letters, or words unless explicitly requested. Focus on creative interpretation, rich detail, and accurate composition.`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
