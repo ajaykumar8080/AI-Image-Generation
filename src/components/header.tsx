@@ -14,7 +14,7 @@ export function Header() {
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center space-x-1">
             <ThemeToggle />
-            <Button variant="outline">Sign In</Button>
+            <Button variant="ghost">Sign In</Button>
           </nav>
         </div>
       </div>
