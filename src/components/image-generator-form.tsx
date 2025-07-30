@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import { generateImage } from '@/ai/flows/generate-image';
+import { doctorPrompt } from '@/ai/flows/doctor-prompt';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +17,11 @@ export default function ImageGeneratorForm() {
   const [statusMessage, setStatusMessage] = useState('Your amazing creation will appear here!');
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<string[]>([]);
+  const [rewrittenPrompt, setRewrittenPrompt] = useState<string | null>(null);
 
   const handleGenerateImage = async () => {
-    if (!prompt.trim()) {
+    const originalPrompt = prompt;
+    if (!originalPrompt.trim()) {
       setError('Please write a description for the image.');
       setStatusMessage('Prompt cannot be empty.');
       return;
@@ -27,15 +30,23 @@ export default function ImageGeneratorForm() {
     setIsLoading(true);
     setImageUrl(null);
     setError(null);
-    setStatusMessage('Conjuring your image... please wait.');
+    setRewrittenPrompt(null);
+    setStatusMessage('Polishing your prompt...');
 
     try {
-      const result = await generateImage({ prompt });
+      // Step 1: Doctor the prompt
+      const doctoredResult = await doctorPrompt({ prompt: originalPrompt });
+      const finalPrompt = doctoredResult.rewrittenPrompt;
+      setRewrittenPrompt(finalPrompt);
+      setStatusMessage('Conjuring your image... please wait.');
+
+      // Step 2: Generate the image with the doctored prompt
+      const result = await generateImage({ prompt: finalPrompt });
       if (result.imageDataUri) {
         setImageUrl(result.imageDataUri);
         setStatusMessage('Your masterpiece is ready!');
         setHistory(prevHistory => 
-          [prompt, ...prevHistory.filter(p => p.toLowerCase() !== prompt.toLowerCase())].slice(0, 5)
+          [originalPrompt, ...prevHistory.filter(p => p.toLowerCase() !== originalPrompt.toLowerCase())].slice(0, 5)
         );
       } else {
         throw new Error('Image generation failed to return data.');
@@ -65,6 +76,7 @@ export default function ImageGeneratorForm() {
     setPrompt('');
     setImageUrl(null);
     setError(null);
+    setRewrittenPrompt(null);
     setStatusMessage('Your amazing creation will appear here!');
   };
 
@@ -115,7 +127,7 @@ export default function ImageGeneratorForm() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Generating...
+                {statusMessage}
               </>
             ) : (
               'Generate Image'
@@ -136,7 +148,7 @@ export default function ImageGeneratorForm() {
             {!isLoading && imageUrl && (
               <NextImage 
                 src={imageUrl} 
-                alt={prompt || "Generated AI image"} 
+                alt={rewrittenPrompt || prompt || "Generated AI image"} 
                 width={1024} 
                 height={1024} 
                 className="max-w-full h-auto rounded-md object-contain"
@@ -153,6 +165,12 @@ export default function ImageGeneratorForm() {
               </div>
             )}
           </div>
+          {rewrittenPrompt && !isLoading && (
+            <div className="text-xs text-muted-foreground text-center p-2 bg-muted rounded-md">
+              <strong>Original prompt:</strong> "{prompt}"<br/>
+              <strong>Showing results for:</strong> "{rewrittenPrompt}"
+            </div>
+          )}
           {imageUrl && !isLoading && (
             <Button
               onClick={handleDownloadImage}
