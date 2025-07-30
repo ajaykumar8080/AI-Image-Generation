@@ -47,7 +47,7 @@ User Prompt: "${input.prompt}"`,
       },
     });
 
-    if (finishReason?.toUpperCase() !== 'STOP' || !media.url) {
+    if (!media?.url) {
       throw new Error(`Image generation failed. The model returned with status: ${finishReason}.`);
     }
     
