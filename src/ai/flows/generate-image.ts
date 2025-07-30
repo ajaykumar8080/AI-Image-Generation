@@ -36,14 +36,19 @@ const generateImageFlow = ai.defineFlow(
     inputSchema: GenerateImageInputSchema,
     outputSchema: GenerateImageOutputSchema,
   },
-  async input => {
-    const {media} = await ai.generate({
+  async (input) => {
+    const {media, finishReason} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: `Generate a high-quality, visually appealing image based on the following description: "${input.prompt}". The image should be a direct visual representation of the prompt, avoiding any text, letters, or words unless explicitly requested. Focus on creative interpretation, rich detail, and accurate composition.`,
+      prompt: `Generate a high-quality, visually appealing image based on the following description: "${input.prompt}". The image should be a direct visual representation of the prompt, avoiding any text, letters, or words unless explicitly requested. Focus on creative interpretation, rich detail, and accurate composition to bring the user's vision to life. If the prompt is simple or abstract, interpret it creatively to produce a compelling image.`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
       },
     });
-    return {imageDataUri: media.url!};
+
+    if (finishReason !== 'STOP' || !media.url) {
+      throw new Error(`Image generation failed. The model returned with status: ${finishReason}.`);
+    }
+    
+    return {imageDataUri: media.url};
   }
 );
