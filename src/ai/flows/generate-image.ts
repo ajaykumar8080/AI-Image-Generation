@@ -44,10 +44,21 @@ const generateImageFlow = ai.defineFlow(
 User Prompt: "${input.prompt}"`,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
+        safetySettings: [
+          {
+            category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+            threshold: 'BLOCK_ONLY_HIGH',
+          },
+        ],
       },
     });
-
+    
     if (!media?.url) {
+       if (finishReason === 'SAFETY') {
+        throw new Error(
+          'Your prompt was blocked for safety reasons. Please try a different prompt.'
+        );
+      }
       throw new Error(`Image generation failed. The model returned with status: ${finishReason}.`);
     }
     
