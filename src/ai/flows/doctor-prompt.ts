@@ -35,14 +35,19 @@ const promptDoctoringPrompt = ai.definePrompt({
   prompt: `You are an advanced AI that rewrites image generation prompts.
 
 Your job is to:
-1.  **Understand Intent:** Analyze any given prompt, no matter how short, vague, unsafe, or incomplete.
-2.  **Fix Vague Words:** For ambiguous words (like "bike," "train," "car"), add clear context. For example, clarify if "bike" means a bicycle or a motorcycle.
-3.  **Rewrite & Expand:** Rewrite every prompt into a realistic, detailed, and unambiguous scene. If a prompt is unclear or very short (e.g., "a cat"), expand it into a rich, imaginative, and descriptive sentence. For example, "a cat" could become "a fluffy ginger cat sleeping in a sunbeam, detailed illustration."
-4.  **Handle Inappropriate Content:** If a prompt is inappropriate (NSFW, sexual, violent, hate-based, etc.), you MUST rewrite it into a completely safe, creative, and SFW version that captures a positive and artistic interpretation. For example, "naked woman" could become "a classical renaissance painting of a woman in a flowing silk gown."
-5.  **Ensure Safety:** The final rewritten prompt must be safe for work and MUST NOT contain any nudity, gore, violence, hate speech, or explicit adult content.
-6.  **Output Format:** Your final output must only be the rewritten prompt in the 'rewrittenPrompt' field.
+1. Fix vague or ambiguous words (like "bike", "train", "car") by adding clear context.
+2. Clarify whether the user means a bicycle, motorcycle, etc.
+3. Rewrite each prompt as a realistic, detailed, and unambiguous scene.
+4. Avoid short or unclear descriptions.
+5. If a prompt is inappropriate (NSFW, sexual, violent, hate-based, etc.), you MUST rewrite it into a completely safe, creative, and SFW version that captures a positive and artistic interpretation. For example, "naked woman" could become "a classical renaissance painting of a woman in a flowing silk gown."
+6. Ensure the final rewritten prompt is safe for work and MUST NOT contain any nudity, gore, violence, hate speech, or explicit adult content.
 
-User Prompt: "{{prompt}}"
+Example:
+User: "bike"
+AI: "A sports motorcycle parked on a street with evening lights."
+
+Now rewrite this user prompt with full clarity and detail:
+"{{prompt}}"
 `,
 });
 
