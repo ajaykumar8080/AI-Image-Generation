@@ -39,9 +39,7 @@ const generateImageFlow = ai.defineFlow(
   async (input) => {
     const {media, finishReason} = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: `Generate a high-quality, photorealistic image based on the following prompt, paying close attention to every detail, especially for long and descriptive requests. The image should be a direct visual representation of the user's text, avoiding any extra text, letters, or words in the image itself. Focus on accurate composition, rich detail, and faithful interpretation to bring the user's vision to life.
-
-User Prompt: "${input.prompt}"`,
+      prompt: input.prompt,
       config: {
         responseModalities: ['TEXT', 'IMAGE'],
         safetySettings: [
