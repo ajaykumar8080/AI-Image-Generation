@@ -53,7 +53,13 @@ export default function ImageGeneratorForm() {
       }
     } catch (err) {
       console.error("Error generating image:", err);
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+      let errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+      if (errorMessage.includes('503 Service Unavailable') || errorMessage.includes('model is overloaded')) {
+        errorMessage = 'The image generator is currently busy. Please try again in a few moments.';
+      } else if (errorMessage.includes('SAFETY')) {
+        errorMessage = 'Your prompt was blocked for safety reasons. Please try a different prompt.';
+      }
+      
       setError(`Oops! Something went wrong. ${errorMessage}`);
       setStatusMessage('Failed to generate image. Please try again.');
     } finally {
