@@ -38,7 +38,7 @@ const generateImageFlow = ai.defineFlow(
   },
   async (input) => {
     const {media, finishReason} = await ai.generate({
-      model: 'googleai/imagen-4.0-fast-generate-001',
+      model: 'googleai/gemini-2.0-flash',
       prompt: input.prompt,
     });
     
@@ -48,7 +48,7 @@ const generateImageFlow = ai.defineFlow(
           'Your prompt was blocked for safety reasons. Please try a different prompt.'
         );
       }
-      throw new Error(`Image generation failed. The model returned with status: ${finishReason}.`);
+      throw new Error(`Image generation failed. The model returned without an image. Status: ${finishReason}.`);
     }
     
     return {imageDataUri: media.url};
