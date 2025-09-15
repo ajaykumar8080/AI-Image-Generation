@@ -48,7 +48,7 @@ const generateImageFlow = ai.defineFlow(
           'Your prompt was blocked for safety reasons. Please try a different prompt.'
         );
       }
-      throw new Error(`Image generation failed. The model returned without an image. Status: ${finishReason}.`);
+      throw new Error(`Image generation failed. The model returned without an image.`);
     }
     
     return {imageDataUri: media.url};
