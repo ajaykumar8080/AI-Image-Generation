@@ -9,9 +9,11 @@
  * - GenerateImageOutput - The return type for the generateImage function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
+import fetch from 'node-fetch';
 
+// -------------------- Schemas --------------------
 const GenerateImageInputSchema = z.object({
   prompt: z.string().describe('The prompt to use to generate the image.'),
 });
@@ -21,15 +23,19 @@ const GenerateImageOutputSchema = z.object({
   imageDataUri: z
     .string()
     .describe(
-      'The generated image as a data URI that includes a MIME type and uses Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'
+      'The generated image as a data URI that includes a MIME type and uses Base64 encoding. Expected format: "data:<mimetype>;base64,<encoded_data>".'
     ),
 });
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
 
-export async function generateImage(input: GenerateImageInput): Promise<GenerateImageOutput> {
+// -------------------- Public Function --------------------
+export async function generateImage(
+  input: GenerateImageInput
+): Promise<GenerateImageOutput> {
   return generateImageFlow(input);
 }
 
+// -------------------- Flow Definition --------------------
 const generateImageFlow = ai.defineFlow(
   {
     name: 'generateImageFlow',
@@ -37,20 +43,38 @@ const generateImageFlow = ai.defineFlow(
     outputSchema: GenerateImageOutputSchema,
   },
   async (input) => {
-    const {media, finishReason} = await ai.generate({
+    const { media, finishReason } = await ai.generate({
       model: 'googleai/imagen-2',
       prompt: input.prompt,
     });
-    
+
     if (!media?.url) {
-       if (finishReason === 'SAFETY') {
+      if (finishReason === 'blocked' || finishReason === 'SAFETY') {
         throw new Error(
           'Your prompt was blocked for safety reasons. Please try a different prompt.'
         );
       }
-      throw new Error(`Image generation failed. The model returned without an image.`);
+      throw new Error(
+        `Image generation failed. The model returned without an image.`
+      );
     }
     
-    return {imageDataUri: media.url};
+    // Convert the returned URL (which might be temporary) to a base64 data URI
+    const imageDataUri = await urlToDataUri(media.url);
+
+    return { imageDataUri };
   }
 );
+
+
+// -------------------- Helper Function --------------------
+async function urlToDataUri(url: string): Promise<string> {
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch generated image from URL: ${url}`);
+  }
+  const buffer = await res.arrayBuffer();
+  const base64 = Buffer.from(buffer).toString('base64');
+  const mime = res.headers.get('content-type') || 'image/png';
+  return `data:${mime};base64,${base64}`;
+}
