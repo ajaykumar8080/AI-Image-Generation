@@ -82,8 +82,6 @@
 
 .input-box input:focus~label,
 .input-box input:valid~label {
-    top: -15px;
-    font-size: 0.8em;
     opacity: 0;
 }
 
