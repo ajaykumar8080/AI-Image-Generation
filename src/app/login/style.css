@@ -1,0 +1,193 @@
+:root {
+    --primary-color: hsl(var(--primary));
+    --background-color: hsl(var(--background));
+    --foreground-color: hsl(var(--foreground));
+    --border-color: hsl(var(--border));
+}
+
+.container-auth {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: 500px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, .1);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+}
+
+.container-auth .form-box {
+    position: absolute;
+    width: 100%;
+    padding: 0 40px;
+    transition: transform .7s ease;
+}
+
+.container-auth .form-box.login {
+    transform: translateX(0);
+}
+
+.container-auth.active .form-box.login {
+    transform: translateX(-120%);
+    transition-delay: 0s;
+}
+
+.container-auth .form-box.register {
+    transform: translateX(120%);
+}
+
+.container-auth.active .form-box.register {
+    transform: translateX(0);
+    transition-delay: .1s;
+}
+
+
+.form-box h2 {
+    font-size: 2.2em;
+    color: var(--primary-color);
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid var(--border-color);
+    margin: 30px 0;
+}
+
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: var(--foreground-color);
+    pointer-events: none;
+    transition: .5s;
+}
+
+.input-box input:focus~label,
+.input-box input:valid~label {
+    top: -5px;
+    color: var(--primary-color);
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: var(--foreground-color);
+    padding: 0 35px 0 5px;
+}
+
+.input-box .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: var(--foreground-color);
+    line-height: 57px;
+}
+
+.btn-auth {
+    width: 100%;
+    height: 45px;
+    background: var(--primary-color);
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+}
+
+.login-register {
+    font-size: .9em;
+    color: var(--foreground-color);
+    text-align: center;
+    margin: 25px 0 10px;
+}
+
+.login-register p button {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.login-register p button:hover {
+    text-decoration: underline;
+}
+
+.container-auth .info-content {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+}
+
+.container-auth .info-content.login {
+    right: 0;
+    transform: translateX(120%);
+}
+
+.container-auth.active .info-content.login {
+    transform: translateX(0);
+    transition: transform .7s ease;
+    transition-delay: .1s;
+}
+
+.container-auth .info-content.register {
+    left: 0;
+    transform: translateX(-120%);
+}
+.container-auth.active .info-content.register {
+    transform: translateX(0);
+    transition: transform .7s ease;
+    transition-delay: 0s;
+}
+
+.info-content h2 {
+    font-size: 2.5em;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.info-content p {
+    font-size: 1em;
+}
+
+.container-auth .bg-animate {
+    position: absolute;
+    top: -4px;
+    right: 0;
+    width: 850px;
+    height: 600px;
+    background: linear-gradient(45deg, transparent, transparent 30%, var(--primary-color));
+    transform: rotate(10deg) skewX(43deg);
+    transform-origin: bottom right;
+    transition: 1.5s ease;
+    transition-delay: .5s;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.container-auth.active .bg-animate {
+    transform: rotate(0) skewX(0);
+    transition-delay: .5s;
+}
