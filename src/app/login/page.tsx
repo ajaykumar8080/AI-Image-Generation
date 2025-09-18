@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from 'react';
@@ -36,34 +37,61 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export default function LoginPage() {
   const [isRegistering, setIsRegistering] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleRegisterSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
+    setError('');
+    // Handle registration logic here
+    console.log("Passwords match. Registering user...");
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background p-4">
       <div className={`container-auth ${isRegistering ? 'active' : ''}`}>
         {/* Register Form */}
         <div className="form-box register">
-          <form action="#">
+          <form onSubmit={handleRegisterSubmit}>
             <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
             <div className="input-box">
               <span className="icon"><User /></span>
-              <Input type="text" required />
-              <label>Name</label>
+              <Input type="text" id="reg-name" required />
+              <label htmlFor="reg-name">Name</label>
             </div>
             <div className="input-box">
               <span className="icon"><Mail /></span>
-              <Input type="email" required />
-              <label>Email</label>
+              <Input type="email" id="reg-email" required />
+              <label htmlFor="reg-email">Email</label>
             </div>
             <div className="input-box">
               <span className="icon"><Lock /></span>
-              <Input type="password" required />
-              <label>Password</label>
+              <Input 
+                type="password" 
+                id="reg-password" 
+                required 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <label htmlFor="reg-password">Password</label>
             </div>
             <div className="input-box">
               <span className="icon"><Lock /></span>
-              <Input type="password" required />
-              <label>Confirm Password</label>
+              <Input 
+                type="password" 
+                id="reg-confirm-password" 
+                required 
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <label htmlFor="reg-confirm-password">Confirm Password</label>
             </div>
+            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
             <Button type="submit" className="w-full mt-8">Create Account</Button>
             <div className="separator"><span>Or continue with</span></div>
             <Button variant="outline" className="w-full google-btn">
@@ -82,13 +110,13 @@ export default function LoginPage() {
             <h2 className="text-2xl font-bold text-center mb-6">Login</h2>
             <div className="input-box">
               <span className="icon"><User /></span>
-              <Input type="text" required />
-              <label>Username</label>
+              <Input type="text" id="login-username" required />
+              <label htmlFor="login-username">Username</label>
             </div>
             <div className="input-box">
               <span className="icon"><Lock /></span>
-              <Input type="password" required />
-              <label>Password</label>
+              <Input type="password" id="login-password" required />
+              <label htmlFor="login-password">Password</label>
             </div>
             <div className="flex justify-between items-center my-4">
               <label className="flex items-center text-sm"><input type="checkbox" className="mr-2"/>Remember me</label>
