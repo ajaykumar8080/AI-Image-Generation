@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
-    --login-primary-color: hsl(15 88% 55%);
+    --login-primary-color: hsl(var(--primary));
     --primary-color: hsl(var(--primary));
     --background-color: hsl(var(--background));
     --foreground-color: hsl(var(--foreground));
@@ -82,9 +82,9 @@
 
 .input-box input:focus~label,
 .input-box input:valid~label {
-    top: -5px;
+    top: -15px;
     font-size: 0.8em;
-    color: var(--login-primary-color);
+    opacity: 0;
 }
 
 .input-box input {
