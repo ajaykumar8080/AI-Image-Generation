@@ -1,4 +1,5 @@
 :root {
+    --login-primary-color: hsl(15 88% 55%);
     --primary-color: hsl(var(--primary));
     --background-color: hsl(var(--background));
     --foreground-color: hsl(var(--foreground));
@@ -50,7 +51,7 @@
 
 .form-box h2 {
     font-size: 2.2em;
-    color: var(--primary-color);
+    color: var(--login-primary-color);
 }
 
 .input-box {
@@ -75,7 +76,7 @@
 .input-box input:focus~label,
 .input-box input:valid~label {
     top: -5px;
-    color: var(--primary-color);
+    color: var(--login-primary-color);
 }
 
 .input-box input {
@@ -100,7 +101,7 @@
 .btn-auth {
     width: 100%;
     height: 45px;
-    background: var(--primary-color);
+    background: var(--login-primary-color);
     border: none;
     outline: none;
     border-radius: 6px;
@@ -118,7 +119,7 @@
 }
 
 .login-register p button {
-    color: var(--primary-color);
+    color: var(--login-primary-color);
     text-decoration: none;
     font-weight: 600;
     background: none;
@@ -180,12 +181,12 @@
     right: 0;
     width: 850px;
     height: 600px;
-    background: linear-gradient(45deg, transparent, transparent 30%, var(--primary-color));
+    background: linear-gradient(45deg, transparent, transparent 30%, var(--login-primary-color));
     transform: rotate(10deg) skewX(43deg);
     transform-origin: bottom right;
     transition: 1.5s ease;
     transition-delay: .5s;
-    border-bottom: 3px solid var(--primary-color);
+    border-bottom: 3px solid var(--login-primary-color);
 }
 
 .container-auth.active .bg-animate {

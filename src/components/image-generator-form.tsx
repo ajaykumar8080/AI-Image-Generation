@@ -96,7 +96,7 @@ export default function ImageGeneratorForm() {
 
   return (
     <>
-      <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-[5px] border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1">
+      <Card className="w-full max-w-xl shadow-xl rounded-xl border-t-4 border-primary animate-fadeIn transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 bg-card">
         <CardHeader className="text-center px-4 md:px-6">
           <CardTitle className="text-2xl md:text-3xl font-headline font-semibold text-primary">Explore the AI</CardTitle>
         </CardHeader>
@@ -142,7 +142,7 @@ export default function ImageGeneratorForm() {
           
           <div 
             id="image-display-area"
-            className="mt-6 min-h-[250px] sm:min-h-[320px] border-2 border-dashed border-gray-300 rounded-lg flex flex-col justify-center items-center bg-gray-50 p-4 text-center overflow-hidden"
+            className="mt-6 min-h-[250px] sm:min-h-[320px] border-2 border-dashed border-border rounded-lg flex flex-col justify-center items-center bg-background/50 p-4 text-center overflow-hidden"
             aria-live="polite"
           >
             {isLoading && !imageUrl && (
@@ -191,7 +191,7 @@ export default function ImageGeneratorForm() {
       </Card>
       
       {history.length > 0 && (
-        <Card className="w-full max-w-xl mt-8 animate-fadeIn shadow-lg rounded-xl">
+        <Card className="w-full max-w-xl mt-8 animate-fadeIn shadow-lg rounded-xl bg-card">
           <CardHeader className="px-4 md:px-6">
             <CardTitle className="flex items-center justify-between text-lg md:text-xl">
               <div className="flex items-center">
