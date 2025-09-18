@@ -10,7 +10,7 @@
     position: relative;
     width: 100%;
     max-width: 440px;
-    height: 500px;
+    height: 550px; /* Increased height for google button */
     background: transparent;
     border: 2px solid rgba(255, 255, 255, .1);
     box-shadow: 0 0 30px rgba(0, 0, 0, .5);
@@ -22,6 +22,11 @@
     backdrop-filter: blur(20px);
     transition: height .2s ease;
 }
+
+.container-auth.active {
+    height: 640px; /* Increased height for register form */
+}
+
 
 .container-auth .form-box {
     position: absolute;
@@ -194,6 +199,39 @@
     transition-delay: .5s;
 }
 
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--foreground-color);
+    margin: 15px 0;
+}
+
+.separator::before,
+.separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.separator:not(:empty)::before {
+    margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+    margin-left: .25em;
+}
+
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--foreground-color);
+}
+
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container-auth {
@@ -234,5 +272,9 @@
 
     .form-box h2 {
         font-size: 2em;
+    }
+
+    .container-auth.active {
+        height: 100%;
     }
 }
