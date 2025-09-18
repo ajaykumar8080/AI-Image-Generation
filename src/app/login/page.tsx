@@ -43,11 +43,11 @@ export default function LoginPage() {
         {/* Register Form */}
         <div className="form-box register">
           <form action="#">
-            <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
             <div className="input-box">
               <span className="icon"><User /></span>
               <Input type="text" required />
-              <label>Username</label>
+              <label>Name</label>
             </div>
             <div className="input-box">
               <span className="icon"><Mail /></span>
@@ -59,13 +59,12 @@ export default function LoginPage() {
               <Input type="password" required />
               <label>Password</label>
             </div>
-            <div className="flex items-start my-4">
-              <label className="flex items-center text-sm">
-                <input type="checkbox" className="mr-2" required />
-                I agree to the terms & conditions
-              </label>
+            <div className="input-box">
+              <span className="icon"><Lock /></span>
+              <Input type="password" required />
+              <label>Confirm Password</label>
             </div>
-            <Button type="submit" className="w-full">Sign Up</Button>
+            <Button type="submit" className="w-full mt-8">Create Account</Button>
             <div className="separator"><span>Or continue with</span></div>
             <Button variant="outline" className="w-full google-btn">
               <GoogleIcon className="mr-2" />
