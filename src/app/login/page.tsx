@@ -133,16 +133,6 @@ export default function LoginPage() {
             </div>
           </form>
         </div>
-
-        {/* Info Content */}
-        <div className="info-content login">
-          <h2 className="text-3xl font-bold">WELCOME BACK!</h2>
-          <p>We are happy to have you with us again. If you need anything, we are here to help.</p>
-        </div>
-        <div className="info-content register">
-          <h2 className="text-3xl font-bold">JOIN US!</h2>
-          <p>Create your account and start your journey with us. It's free and only takes a minute.</p>
-        </div>
       </div>
     </div>
   );
