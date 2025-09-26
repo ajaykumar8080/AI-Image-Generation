@@ -15,7 +15,12 @@ const IMAGES = [
   'https://images.unsplash.com/photo-1494094892896-7f14a4433b7a?q=80&w=1920&h=1080&auto-format&fit=crop',
   'https://plus.unsplash.com/premium_photo-1664910706524-e783eed89e71?q=80&w=1920&h=1080&auto-format&fit=crop',
   'https://images.unsplash.com/photo-1503788311183-fa3bf9c4bc32?q=80&w=1920&h=1080&auto-format&fit=crop',
-  'https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=1920&h=1080&auto-format&fit=crop'
+  'https://images.unsplash.com/photo-1585970480901-90d6bb2a48b5?q=80&w=1920&h=1080&auto-format&fit=crop',
+  'https://images.unsplash.com/photo-1620421680100-34f039389b88?q=80&w=1920&h=1080&auto-format&fit=crop',
+  'https://images.unsplash.com/photo-1617396900799-f4ec2b43c7ae?q=80&w=1920&h=1080&auto-format&fit=crop',
+  'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=1920&h=1080&auto-format&fit=crop',
+  'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto-format&fit=crop',
+  'https://images.unsplash.com/photo-1552083375-1447ce886485?q=80&w=1920&h=1080&auto-format&fit=crop'
 ];
 
 const variants = {
