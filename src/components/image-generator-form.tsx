@@ -7,16 +7,19 @@ import { doctorPrompt } from '@/ai/flows/doctor-prompt';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, Image as ImageIcon, AlertTriangle, Download, X, History, Trash2 } from 'lucide-react';
-import NextImage from 'next/image'; 
+import { Loader2, Image as ImageIcon, AlertTriangle, Download, X } from 'lucide-react';
+import NextImage from 'next/image';
 
-export default function ImageGeneratorForm() {
+interface ImageGeneratorFormProps {
+  onNewPrompt?: (prompt: string) => void;
+}
+
+export default function ImageGeneratorForm({ onNewPrompt }: ImageGeneratorFormProps) {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('Your amazing creation will appear here!');
   const [error, setError] = useState<string | null>(null);
-  const [history, setHistory] = useState<string[]>([]);
   const [rewrittenPrompt, setRewrittenPrompt] = useState<string | null>(null);
 
   const handleGenerateImage = async () => {
@@ -45,9 +48,7 @@ export default function ImageGeneratorForm() {
       if (result.imageDataUri) {
         setImageUrl(result.imageDataUri);
         setStatusMessage('Your masterpiece is ready!');
-        setHistory(prevHistory => 
-          [originalPrompt, ...prevHistory.filter(p => p.toLowerCase() !== originalPrompt.toLowerCase())].slice(0, 5)
-        );
+        onNewPrompt?.(originalPrompt);
       } else {
         throw new Error('Image generation failed to return data.');
       }
@@ -72,7 +73,7 @@ export default function ImageGeneratorForm() {
     const link = document.createElement('a');
     link.href = imageUrl;
     const fileName = prompt.trim().toLowerCase().replace(/\s+/g, '_') || 'generated_image';
-    link.download = `${fileName}.png`; 
+    link.download = `${fileName}.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -84,14 +85,6 @@ export default function ImageGeneratorForm() {
     setError(null);
     setRewrittenPrompt(null);
     setStatusMessage('Your amazing creation will appear here!');
-  };
-
-  const handleHistoryClick = (historyPrompt: string) => {
-    setPrompt(historyPrompt);
-  };
-
-  const handleClearHistory = () => {
-    setHistory([]);
   };
 
   return (
@@ -140,7 +133,7 @@ export default function ImageGeneratorForm() {
             )}
           </Button>
           
-          <div 
+          <div
             id="image-display-area"
             className="mt-6 min-h-[250px] sm:min-h-[320px] border-2 border-dashed border-border rounded-lg flex flex-col justify-center items-center bg-background/50 p-4 text-center overflow-hidden"
             aria-live="polite"
@@ -152,14 +145,14 @@ export default function ImageGeneratorForm() {
               </div>
             )}
             {!isLoading && imageUrl && (
-              <NextImage 
-                src={imageUrl} 
-                alt={rewrittenPrompt || prompt || "Generated AI image"} 
-                width={1024} 
-                height={1024} 
+              <NextImage
+                src={imageUrl}
+                alt={rewrittenPrompt || prompt || "Generated AI image"}
+                width={1024}
+                height={1024}
                 className="max-w-full h-auto rounded-md object-contain"
                 data-ai-hint="generated image"
-                priority={true} 
+                priority={true}
               />
             )}
             {!isLoading && !imageUrl && (
@@ -189,44 +182,6 @@ export default function ImageGeneratorForm() {
           )}
         </CardContent>
       </Card>
-      
-      {history.length > 0 && (
-        <Card className="w-full max-w-xl mt-8 animate-fadeIn shadow-lg rounded-xl bg-card">
-          <CardHeader className="px-4 md:px-6">
-            <CardTitle className="flex items-center justify-between text-lg md:text-xl">
-              <div className="flex items-center">
-                <History className="mr-2 h-5 w-5" />
-                Search History
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleClearHistory}
-                aria-label="Clear search history"
-                className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                disabled={isLoading}
-              >
-                <Trash2 className="h-5 w-5" />
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 md:px-6 pb-6">
-            <ul className="space-y-2">
-              {history.map((item, index) => (
-                <li key={index}>
-                  <button 
-                    onClick={() => handleHistoryClick(item)} 
-                    className="w-full text-left p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors duration-200 text-sm md:text-base"
-                    disabled={isLoading}
-                  >
-                    {item}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      )}
     </>
   );
 }
