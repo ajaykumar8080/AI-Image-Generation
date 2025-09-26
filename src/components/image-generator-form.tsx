@@ -9,18 +9,16 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2, Image as ImageIcon, AlertTriangle, Download, X } from 'lucide-react';
 import NextImage from 'next/image';
+import { useHistory } from '@/context/history-context';
 
-interface ImageGeneratorFormProps {
-  onNewPrompt?: (prompt: string) => void;
-}
-
-export default function ImageGeneratorForm({ onNewPrompt }: ImageGeneratorFormProps) {
+export default function ImageGeneratorForm() {
   const [prompt, setPrompt] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('Your amazing creation will appear here!');
   const [error, setError] = useState<string | null>(null);
   const [rewrittenPrompt, setRewrittenPrompt] = useState<string | null>(null);
+  const { addHistory } = useHistory();
 
   const handleGenerateImage = async () => {
     const originalPrompt = prompt;
@@ -48,7 +46,7 @@ export default function ImageGeneratorForm({ onNewPrompt }: ImageGeneratorFormPr
       if (result.imageDataUri) {
         setImageUrl(result.imageDataUri);
         setStatusMessage('Your masterpiece is ready!');
-        onNewPrompt?.(originalPrompt);
+        addHistory(originalPrompt);
       } else {
         throw new Error('Image generation failed to return data.');
       }

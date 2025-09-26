@@ -1,4 +1,7 @@
-import { Menu, Wand2, User, Settings, History, Trash2, MessageSquare } from 'lucide-react';
+
+"use client";
+
+import { Menu, Wand2, User, Settings, History, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { ThemeToggle } from './theme-toggle';
 import { Button } from './ui/button';
@@ -10,14 +13,17 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Separator } from './ui/separator';
+import { useHistory } from '@/context/history-context';
 
-interface HeaderProps {
-  history: string[];
-  onClearHistory: () => void;
-  onHistoryClick: (prompt: string) => void;
-}
+export function Header() {
+  const { history, clearHistory } = useHistory();
 
-export function Header({ history, onClearHistory, onHistoryClick }: HeaderProps) {
+  const handleHistoryClick = (prompt: string) => {
+    // This is a placeholder for future functionality.
+    // For now, we can just log it to the console.
+    console.log(`Selected history item: ${prompt}`);
+  };
+
   return (
     <header className="bg-background/80 backdrop-blur-sm sticky top-0 z-40 w-full border-b">
       <div className="container flex h-16 items-center mx-auto px-4">
@@ -53,7 +59,7 @@ export function Header({ history, onClearHistory, onHistoryClick }: HeaderProps)
                       <History className="h-5 w-5" />
                       History
                     </h3>
-                    <Button variant="ghost" size="icon" onClick={onClearHistory} aria-label="Clear history">
+                    <Button variant="ghost" size="icon" onClick={clearHistory} aria-label="Clear history">
                       <Trash2 className="h-5 w-5" />
                     </Button>
                   </div>
@@ -62,7 +68,7 @@ export function Header({ history, onClearHistory, onHistoryClick }: HeaderProps)
                     {history.map((item, index) => (
                       <li key={index}>
                         <button
-                          onClick={() => onHistoryClick(item)}
+                          onClick={() => handleHistoryClick(item)}
                           className="w-full text-left p-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors duration-200 text-sm truncate"
                         >
                           {item}

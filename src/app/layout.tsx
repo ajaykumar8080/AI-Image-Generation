@@ -1,50 +1,19 @@
 
 'use client';
 
-import React, { useState } from 'react';
-import type { Metadata } from 'next';
+import React from 'react';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { ThemeProvider } from '@/components/theme-provider';
+import { HistoryProvider } from '@/context/history-context';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [history, setHistory] = useState<string[]>([]);
-
-  const handleNewPrompt = (prompt: string) => {
-    setHistory(prevHistory => 
-      [prompt, ...prevHistory.filter(p => p.toLowerCase() !== prompt.toLowerCase())].slice(0, 15)
-    );
-  };
-
-  const handleClearHistory = () => {
-    setHistory([]);
-  };
-
-  const handleHistoryClick = (prompt: string) => {
-    // This is a placeholder for future functionality.
-    // For now, we can just log it to the console.
-    console.log(`Selected history item: ${prompt}`);
-  };
-
-  // A simple way to pass props to children if they are the intended component
-  const childrenWithProps = React.Children.map(children, child => {
-    // Checking if it's a valid React element is important
-    if (React.isValidElement(child)) {
-      // Here you can check the type of the child and add props
-      // For this case, we'll assume the child is the page component that needs the prop.
-      // A more robust solution might use React.Context if prop drilling becomes an issue.
-      // @ts-ignore
-      return React.cloneElement(child, { onNewPrompt: handleNewPrompt });
-    }
-    return child;
-  });
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -60,16 +29,14 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem={false}
         >
-          <Header 
-            history={history} 
-            onClearHistory={handleClearHistory} 
-            onHistoryClick={handleHistoryClick} 
-          />
-          <main className="flex-grow">
-            {childrenWithProps}
-          </main>
-          <Footer />
-          <Toaster />
+          <HistoryProvider>
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+            <Toaster />
+          </HistoryProvider>
         </ThemeProvider>
       </body>
     </html>
