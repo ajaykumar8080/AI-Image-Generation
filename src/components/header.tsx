@@ -32,14 +32,31 @@ export function Header({ history, onClearHistory, onHistoryClick }: HeaderProps)
             <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm">
               <SheetHeader className="flex flex-row items-center justify-between">
                 <SheetTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  History
+                  <Wand2 className="h-5 w-5" />
+                  Menu
                 </SheetTitle>
-                <Button variant="ghost" size="icon" onClick={onClearHistory} aria-label="Clear history">
-                  <Trash2 className="h-5 w-5" />
-                </Button>
               </SheetHeader>
               <div className="py-4">
+                <nav className="flex flex-col space-y-2">
+                  <Button asChild variant="ghost" className="justify-start">
+                    <Link href="#">
+                      <User className="mr-2 h-5 w-5" />
+                      Profile
+                    </Link>
+                  </Button>
+                </nav>
+              </div>
+              <Separator />
+              <div className="py-4">
+                 <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <History className="h-5 w-5" />
+                      History
+                    </h3>
+                    <Button variant="ghost" size="icon" onClick={onClearHistory} aria-label="Clear history">
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
+                  </div>
                 {history.length > 0 ? (
                   <ul className="space-y-2">
                     {history.map((item, index) => (
@@ -60,13 +77,7 @@ export function Header({ history, onClearHistory, onHistoryClick }: HeaderProps)
               <Separator />
               <div className="py-4">
                 <nav className="flex flex-col space-y-2">
-                  <Button asChild variant="ghost" className="justify-start">
-                    <Link href="#">
-                      <User className="mr-2 h-5 w-5" />
-                      Profile
-                    </Link>
-                  </Button>
-                  <Button asChild variant="ghost" className="justify-start">
+                   <Button asChild variant="ghost" className="justify-start">
                     <Link href="#">
                       <Settings className="mr-2 h-5 w-5" />
                       Settings
