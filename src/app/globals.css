@@ -1,6 +1,5 @@
 
 @import url('./login/style.css');
-@import url('../components/rolling-gallery.css');
 
 @tailwind base;
 @tailwind components;

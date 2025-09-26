@@ -1,5 +1,5 @@
 import ImageGeneratorForm from '@/components/image-generator-form';
-import RollingGallery from '@/components/rolling-gallery';
+import ImageSlideshow from '@/components/image-slideshow';
 
 export default function HomePage() {
   return (
@@ -9,7 +9,7 @@ export default function HomePage() {
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
           Generated Images
         </h2>
-        <RollingGallery autoplay={false} pauseOnHover={false} />
+        <ImageSlideshow />
       </div>
     </div>
   );
