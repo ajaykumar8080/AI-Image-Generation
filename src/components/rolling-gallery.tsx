@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from 'react';
-import { motion, useMotionValue, useAnimation, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useAnimation } from 'framer-motion';
 import './rolling-gallery.css';
 
 const IMGS = [
@@ -26,8 +26,7 @@ type RollingGalleryProps = {
 
 const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS }: RollingGalleryProps) => {
   const [isScreenSizeSm, setIsScreenSizeSm] = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-
+  
   useEffect(() => {
     const checkScreenSize = () => {
       setIsScreenSizeSm(window.innerWidth <= 640);
@@ -40,34 +39,33 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
   const cylinderWidth = isScreenSizeSm ? 1100 : 1800;
   const faceCount = images.length;
   const faceWidth = (cylinderWidth / faceCount) * 1.5;
-  const dragFactor = 0.05;
   const radius = cylinderWidth / (2 * Math.PI);
 
-  const rotation = useMotionValue(0);
+  const rotationY = useMotionValue(0);
   const controls = useAnimation();
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleDrag = (_: any, info: { offset: { x: number; }; }) => {
-    rotation.set(rotation.get() + info.offset.x * dragFactor);
-  };
-
-  const handleDragEnd = (_: any, info: { velocity: { x: number; }; }) => {
+  const rotateOnce = () => {
+    const currentRotation = rotationY.get();
     controls.start({
-      rotateY: rotation.get() + info.velocity.x * dragFactor,
-      transition: { type: 'spring', stiffness: 60, damping: 20, mass: 0.1, ease: 'easeOut' }
+        rotateY: currentRotation - 360 / faceCount,
+        transition: { duration: 1, ease: 'easeInOut' }
+    }).then(() => {
+      rotationY.set(currentRotation - 360 / faceCount);
     });
-  };
+  }
 
   const startAutoplay = () => {
     if (autoplayRef.current) clearInterval(autoplayRef.current);
     if (autoplay) {
       autoplayRef.current = setInterval(() => {
-        const currentRotation = rotation.get();
+        const currentRotation = rotationY.get();
         controls.start({
           rotateY: currentRotation - 360 / faceCount,
           transition: { duration: 2, ease: 'linear' }
+        }).then(() => {
+          rotationY.set(currentRotation - 360 / faceCount);
         });
-        rotation.set(currentRotation - 360 / faceCount);
       }, 2000);
     }
   };
@@ -79,15 +77,6 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
     }
     controls.stop();
   };
-  
-  const rotateOnce = () => {
-    const currentRotation = rotation.get();
-    controls.start({
-        rotateY: currentRotation - 360 / faceCount,
-        transition: { duration: 1, ease: 'easeInOut' }
-    });
-    rotation.set(currentRotation - 360 / faceCount);
-  }
 
   useEffect(() => {
     if (autoplay) {
@@ -99,7 +88,6 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
 
 
   const handleMouseEnter = () => {
-    setIsHovering(true);
     if (autoplay && pauseOnHover) {
       stopAutoplay();
     } else if (!autoplay) {
@@ -108,7 +96,6 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
   };
 
   const handleMouseLeave = () => {
-    setIsHovering(false);
     if (autoplay && pauseOnHover) {
       startAutoplay();
     }
@@ -120,16 +107,14 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
       <div className="gallery-gradient gallery-gradient-right"></div>
       <div className="gallery-content">
         <motion.div
-          drag="x"
           className="gallery-track"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
             width: cylinderWidth,
-            transformStyle: 'preserve-3d'
+            transformStyle: 'preserve-3d',
+            rotateY: rotationY,
           }}
-          onDrag={handleDrag}
-          onDragEnd={handleDragEnd}
           animate={controls}
         >
           {images.map((url, i) => (
