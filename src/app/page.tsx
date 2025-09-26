@@ -9,7 +9,7 @@ export default function HomePage() {
         <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 text-foreground">
           Generated Images
         </h2>
-        <RollingGallery autoplay={true} pauseOnHover={true} />
+        <RollingGallery autoplay={false} pauseOnHover={false} />
       </div>
     </div>
   );
