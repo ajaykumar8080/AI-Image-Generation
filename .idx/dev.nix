@@ -17,11 +17,13 @@
     projectId = "demo-app";
     services = ["auth" "firestore"];
   };
+
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
       # "vscodevim.vim"
     ];
+
     workspace = {
       onCreate = {
         default.openFiles = [
@@ -29,6 +31,10 @@
         ];
       };
     };
+
+
+
+
     # Enable previews and customize configuration
     previews = {
       enable = true;
